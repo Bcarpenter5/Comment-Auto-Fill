@@ -118,7 +118,8 @@ namespace autoComenter
 
             // add the arguments to the list
             bracketText = fulText.Substring(openBracket + 1, closeBracket - openBracket - 1);
-            
+
+            System.Diagnostics.Trace.WriteLine(bracketText);
             // check if there are any arguments
             if(fulText.Contains(",")){
                 while(true){
@@ -132,9 +133,10 @@ namespace autoComenter
                         break;
                     }
                     // add the argument to the list
-                    methodInfo.args[i] = fulText.Substring(0, comma - 1);
+                    methodInfo.args[i] = bracketText.Substring(0, comma+1);
                     // remove the argument from the string
-                    bracketText = bracketText.Substring(comma + 1, bracketText.Length-1);
+                    bracketText = bracketText.Substring(comma + 1);
+            System.Diagnostics.Trace.WriteLine(bracketText);
                     i++; // location in the loop
                 }
             }
@@ -255,14 +257,7 @@ namespace autoComenter
         }
 
         private void ComementFile(object sender, EventArgs e) {
-            try
-            {// this will try to parse the method
             parseComment(txbx_methodHolder.Text.ToString(), lineLocation[listIndex]);
-            }
-            catch (System.Exception)// if it fails it will skip the line
-            {
-                MessageBox.Show("the line is an invalid method");
-            }
         }
 
         private void SkipComment(object sender, EventArgs e) {
