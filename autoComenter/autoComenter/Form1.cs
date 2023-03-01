@@ -40,6 +40,9 @@ namespace autoComenter
             // local variables
             int lineNum = 0;
             // open the file
+
+            // add a filter to the open file Dialog
+            OpenICA.Filter = "C# Files (*.cs)|*.cs|All Files (*.*)|*.*";
             if(OpenICA.ShowDialog() == DialogResult.OK){
                 fileLocation = OpenICA.FileName;
                 try{
@@ -215,11 +218,9 @@ namespace autoComenter
             // add the header
             TextLines.Insert(0, headerfooter);
             locationAdded++;
-            TextLines.Insert(0, baseComment + "Author: " + txbx_name.Text);
-            locationAdded++;
             TextLines.Insert(0, baseComment );// add space
             locationAdded++;
-            TextLines.Insert(0, baseComment + "Project: " + txbx_projectName.Text);
+            TextLines.Insert(0, baseComment + "Date: " + DateTime.Now.ToString("MM/dd/yyyy"));
             locationAdded++;
             TextLines.Insert(0, baseComment );// add space
             locationAdded++;
@@ -227,9 +228,11 @@ namespace autoComenter
             locationAdded++;
             TextLines.Insert(0, baseComment );// add space
             locationAdded++;
-            TextLines.Insert(0, baseComment + "Date: " + DateTime.Now.ToString("MM/dd/yyyy"));
+            TextLines.Insert(0, baseComment + "Project: " + txbx_projectName.Text);
             locationAdded++;
             TextLines.Insert(0, baseComment );// add space
+            locationAdded++;
+            TextLines.Insert(0, baseComment + "Author: " + txbx_name.Text);
             locationAdded++;
             TextLines.Insert(0, headerfooter);
             locationAdded++;
@@ -257,7 +260,16 @@ namespace autoComenter
         }
 
         private void ComementFile(object sender, EventArgs e) {
-            parseComment(txbx_methodHolder.Text.ToString(), lineLocation[listIndex]);
+            try
+            {
+                parseComment(txbx_methodHolder.Text.ToString(), lineLocation[listIndex]);
+                
+            }
+            catch (System.Exception)
+            {
+                MessageBox.Show("the line was not a method");
+                
+            }
         }
 
         private void SkipComment(object sender, EventArgs e) {
